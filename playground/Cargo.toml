@@ -1,0 +1,19 @@
+[package]
+name = "playground"
+version = "0.1.0"
+edition = "2024"
+
+[workspace.lints.clippy]
+unwrap_used = "warn"
+redundant_test_prefix = "warn"
+cast_lossless = "warn"
+allow_attributes = "warn"
+clone_on_ref_ptr = "warn"
+create_dir = "warn"
+dbg_macro = "warn"
+exit = "warn"
+implicit_clone = "warn"
+unused_result_ok = "warn"
+unused_trait_names = "warn"
+
+[dependencies]
