@@ -19,6 +19,6 @@ fn count_parenthesis(file_path: &str) -> io::Result<i32> {
 
 fn main() -> io::Result<()> {
     let count = count_parenthesis("input/2015-1.txt")?;
-    println!("{:}", count);
+    println!("{}", count);
     Ok(())
 }

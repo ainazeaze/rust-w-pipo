@@ -24,6 +24,6 @@ fn first_parenthesis_negative_floor(file_path: &str) -> io::Result<i32> {
 
 fn main() -> io::Result<()> {
     let count = first_parenthesis_negative_floor("input/2015-1.txt")?;
-    println!("{:}", count);
+    println!("{}", count);
     Ok(())
 }
