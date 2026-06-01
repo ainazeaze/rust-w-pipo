@@ -74,7 +74,14 @@ fn main() {
     match simulate("input/2016-8.txt") {
         Ok(grid) => {
             let count: usize = count_lit_pixel(&grid);
-            println!("{count:?}")
+            println!("{count:?}");
+            // part 2 : printing the whole grid
+            for row in grid.iter() {
+                for &cell in row.iter() {
+                    print!("{}", if cell { "#" } else { "." })
+                }
+                println!()
+            }
         }
         _ => {}
     }
