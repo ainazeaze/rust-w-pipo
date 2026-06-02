@@ -1,3 +1,5 @@
+// Some random note during the course
+
 fn main() {
     println!("Hello, world!");
     let a = 'a';
@@ -13,4 +15,6 @@ fn main() {
     // Exception does not exist, use Result<T,E>, use ? to get the value or return Err/None
 
     // Collection
+    // Vec, HashMap, HashSet
+    // Box<dyn, Error>, whatever error
 }

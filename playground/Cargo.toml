@@ -3,6 +3,9 @@ name = "playground"
 version = "0.1.0"
 edition = "2024"
 
+[workspace]
+members = ["aoc"]
+
 [workspace.lints.clippy]
 unwrap_used = "warn"
 redundant_test_prefix = "warn"
