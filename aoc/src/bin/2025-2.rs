@@ -5,7 +5,7 @@ fn is_invalid(n: usize) -> bool {
     let len = s.len();
 
     // Must have even number of digits
-    if len % 2 != 0 {
+    if len.is_multiple_of(2) {
         return false;
     }
 
