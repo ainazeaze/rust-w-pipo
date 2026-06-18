@@ -13,31 +13,30 @@ impl Client {
             inbox: Vec::new(),
         }))
     }
-
-    fn receive(self, message: &str) {
-        println!("{message}");
+    fn print_messages(&self) {
+        for message in &self.inbox {
+            println!("{} : {message}", &self.name)
+        }
     }
 }
 
 #[derive(Clone)]
 struct ChatRoom {
     members: Vec<Rc<RefCell<Client>>>,
-    inbox: Vec<String>,
 }
 
 impl ChatRoom {
     fn new() -> Self {
         Self {
             members: Vec::new(),
-            inbox: Vec::new(),
         }
     }
 
     fn join(&mut self, client: Rc<RefCell<Client>>) {
         self.members.push(client);
     }
-    fn send(mut self, message: &str) {
-        for mut member in self.members {
+    fn send(self, message: &str) {
+        for member in self.members {
             member.borrow_mut().inbox.push(String::from(message))
         }
     }
@@ -63,4 +62,7 @@ fn main() {
     room_c.send("Hello Room C");
 
     // print messages for each
+    alice.borrow().print_messages();
+    bob.borrow().print_messages();
+    charlie.borrow().print_messages();
 }
