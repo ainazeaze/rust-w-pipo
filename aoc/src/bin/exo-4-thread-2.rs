@@ -68,8 +68,6 @@ fn main() {
     let _ = t2.join();
     let _ = t3.join();
 
-    // dropping the Arc clients releases the last senders, closing the receivers
-    // which ends the for-loop in each print thread
     drop(alice);
     drop(bob);
     drop(charlie);
