@@ -30,6 +30,13 @@ fn main() {
     step4_post_json();
     step5_timeout_and_errors();
     step6_reusable_client();
+
+    // Part 2 — Async
+    let rt = tokio::runtime::Runtime::new().unwrap();
+    rt.block_on(async {
+        step7_simple_get_async().await;
+        step8_concurrent_requests().await;
+    });
 }
 
 //Part 1 — Blocking Request
@@ -122,16 +129,9 @@ fn step5_timeout_and_errors() {
     }
 }
 
-/// 6. Reusable Client — build once, share across calls
+/// 6. Reusable Client: build once, share across calls
 fn step6_reusable_client() {
     println!("\n 6. Reusable Client");
-
-    let client = Client::builder()
-        .timeout(Duration::from_secs(10))
-        .user_agent("reqwest-explo/1.0")
-        .build()
-        .expect("failed to build client");
-
     let client = Client::new();
 
     for id in 1..=3 {
@@ -143,5 +143,71 @@ fn step6_reusable_client() {
             .expect("failed to deserialize");
 
         println!("Post {id}: {}", post.title);
+    }
+}
+
+// Part 2 — Async
+
+/// 7. Same simple GET but async — notice the only differences are:
+///    async fn, .await, and using reqwest::get instead of reqwest::blocking::get.
+async fn step7_simple_get_async() {
+    println!("\n 7. Simple GET (async)");
+
+    let body = reqwest::get(format!("{BASE_URL}/posts/1"))
+        .await
+        .expect("request failed")
+        .text()
+        .await
+        .expect("failed to read body");
+
+    println!("{body}");
+}
+
+/// 8. Concurrent requests with tokio::join!.
+async fn step8_concurrent_requests() {
+    println!("\n 8. Concurrent Requests");
+
+    let client = reqwest::Client::new();
+
+    let (r1, r2, r3) = tokio::join!(
+        client.get(format!("{BASE_URL}/posts/1")).send(),
+        client.get(format!("{BASE_URL}/posts/2")).send(),
+        client.get(format!("{BASE_URL}/posts/3")).send(),
+    );
+
+    for (i, result) in [r1, r2, r3].into_iter().enumerate() {
+        let post: Post = result
+            .expect("request failed")
+            .json()
+            .await
+            .expect("failed to deserialize");
+        println!("Post {}: {}", i + 1, post.title);
+    }
+}
+
+/// 9. Concurrent requests with tokio::spwan.
+async fn step9_concurrent_requests() {
+    println!("\n 8. Concurrent Requests");
+
+    let client = reqwest::Client::new();
+
+    let handle1 = tokio::spawn(client.get(format!("{BASE_URL}/posts/1")).send());
+    let handle2 = tokio::spawn(client.get(format!("{BASE_URL}/posts/2")).send());
+    let handle3 = tokio::spawn(client.get(format!("{BASE_URL}/posts/3")).send());
+
+    for (i, result) in [
+        handle1.await.unwrap(),
+        handle2.await.unwrap(),
+        handle3.await.unwrap(),
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let post: Post = result
+            .expect("request failed")
+            .json()
+            .await
+            .expect("failed to deserialize");
+        println!("Post {}: {}", i + 1, post.title);
     }
 }
