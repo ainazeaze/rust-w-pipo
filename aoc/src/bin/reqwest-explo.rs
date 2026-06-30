@@ -1,35 +1,35 @@
 use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
-use std::time::Duration;
-
-// Shared types
-
-#[derive(Debug, Deserialize)]
-struct Post {
-    id: u32,
-    title: String,
-    body: String,
-    #[serde(rename = "userId")]
-    user_id: u32,
-}
-
-#[derive(Debug, Serialize)]
-struct NewPost {
-    title: String,
-    body: String,
-    #[serde(rename = "userId")]
-    user_id: u32,
-}
-
+    use std::time::Duration;
+    
+    // Shared types
+    
+    #[derive(Debug, Deserialize)]
+    struct Post {
+        id: u32,
+        title: String,
+        body: String,
+        #[serde(rename = "userId")]
+        user_id: u32,
+    }
+    
+    #[derive(Debug, Serialize)]
+    struct NewPost {
+        title: String,
+        body: String,
+        #[serde(rename = "userId")]
+        user_id: u32,
+    }
+ 
 const BASE_URL: &str = "https://jsonplaceholder.typicode.com";
 
 fn main() {
-    step1_simple_get();
-    step2_status_and_headers();
-    step3_query_params();
-    step4_post_json();
+    //step1_simple_get();
+    //step2_status_and_headers();
+    //step3_query_params();
+    //step4_post_json();
     step5_timeout_and_errors();
-    step6_reusable_client();
+    //step6_reusable_client();
 
     // Part 2 — Async
     let rt = tokio::runtime::Runtime::new().unwrap();
